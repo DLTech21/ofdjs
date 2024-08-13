@@ -194,24 +194,28 @@ export const calTextPoint = function (textCodes) {
             textStr += '';
             textStr = decodeHtml(textStr);
             textStr = textStr.replace(/&#x20;/g, ' ');
-            for (let i = 0; i < textStr.length; i++) {
-                if (i > 0 && deltaXList.length > 0) {
-                    x += deltaXList[(i - 1)];
-                }
-                if (i > 0 && deltaYList.length > 0) {
-                    y += deltaYList[(i - 1)];
-                }
-                let text = textStr.substring(i, i + 1);
-                let filterPointY = textCodePointList.filter((textCodePoint) => {
-                    return textCodePoint.y == converterDpi(y)
-                });
-                if (filterPointY && filterPointY.length) { // Y坐标相同，无需再创建text标签
-                    filterPointY[0].text += text;
-                } else {
-                    let textCodePoint = { 'x': converterDpi(x), 'y': converterDpi(y), 'text': text };
-                    textCodePointList.push(textCodePoint);
-                }
+            const maxLen = Math.max(deltaXList.length, deltaYList.length)
+            let pointX = converterDpi(x)
+            let pointY = converterDpi(y)
+
+            // 修复字间距过宽的问题
+            const xList = [pointX]
+            const yList = [pointY]
+            let posX = parseFloat(pointX)
+            let posY = parseFloat(pointY)
+            for (let i = 0; i < maxLen; i++) {
+                posX += converterDpi(deltaXList[i] || 0)
+                posY += converterDpi(deltaYList[i] || 0)
+                xList.push(posX)
+                yList.push(posY)
             }
+            textCodePointList.push({
+                x: pointX,
+                y: pointY,
+                xList,
+                yList,
+                text: textStr
+            });
         }
     }
     return textCodePointList;

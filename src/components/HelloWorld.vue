@@ -488,6 +488,7 @@ export default {
           that.loading = false;
         },
         fail(error) {
+          console.log(error)
           that.loading = false;
           that.$alert('OFD打开失败', error, {
             confirmButtonText: '确定',
