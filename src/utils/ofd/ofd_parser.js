@@ -309,8 +309,12 @@ const getMultiMediaRes = async function (zip, res, doc) {
                         const jbig2 = await parseJbig2ImageFromZip(zip, file);
                         multiMediaResObj[item['@_ID']] = jbig2;
                     } else {
-                        const img = await parseOtherImageFromZip(zip, file);
-                        multiMediaResObj[item['@_ID']] = {img, 'format': 'png'};
+                        try {
+                            const img = await parseOtherImageFromZip(zip, file);
+                            multiMediaResObj[item['@_ID']] = {img, 'format': 'png'};
+                        } catch (e) {
+                            console.error(e, zip, file)
+                        }
                     }
                 } else {
                     multiMediaResObj[item['@_ID']] = file;

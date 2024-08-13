@@ -241,15 +241,15 @@ const renderLayer = function (pageDiv, fontResObj, drawParamResObj, multiMediaRe
     let drawParam = layer?.['@_DrawParam'];
     if (drawParam && Object.keys(drawParamResObj).length > 0 && drawParamResObj[drawParam]) {
         if (drawParamResObj[drawParam]['relative']) {
-            drawParam = drawParamResObj[drawParam]['relative'];
-            if (drawParamResObj[drawParam]['FillColor']) {
-                fillColor = parseColor(drawParamResObj[drawParam]['FillColor']);
+            const relaDrawParam = drawParamResObj[drawParam]['relative'];
+            if (drawParamResObj[relaDrawParam]['FillColor']) {
+                fillColor = parseColor(drawParamResObj[relaDrawParam]['FillColor']);
             }
-            if (drawParamResObj[drawParam]['StrokeColor']) {
-                strokeColor = parseColor(drawParamResObj[drawParam]['StrokeColor']);
+            if (drawParamResObj[relaDrawParam]['StrokeColor']) {
+                strokeColor = parseColor(drawParamResObj[relaDrawParam]['StrokeColor']);
             }
-            if (drawParamResObj[drawParam]['LineWidth']) {
-                lineWith = converterDpi(drawParamResObj[drawParam]['LineWidth']);
+            if (drawParamResObj[relaDrawParam]['LineWidth']) {
+                lineWith = converterDpi(drawParamResObj[relaDrawParam]['LineWidth']);
             }
         }
         if (drawParamResObj[drawParam]['FillColor']) {
@@ -375,8 +375,8 @@ export const renderTextObject = function (fontResObj, textObject, defaultFillCol
     for (const textCodePoint of textCodePointList) {
         if (textCodePoint && !isNaN(textCodePoint.x)) {
             let text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-            text.setAttribute('x', textCodePoint.x);
-            text.setAttribute('y', textCodePoint.y);
+            text.setAttribute('x', textCodePoint.xList.join(' '));
+            text.setAttribute('y', textCodePoint.yList.join(' '));
             text.innerHTML = textCodePoint.text;
             if (ctm) {
                 const ctms = parseCtm(ctm);
