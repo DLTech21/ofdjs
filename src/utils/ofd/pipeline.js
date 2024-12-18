@@ -18,7 +18,9 @@ Array.prototype.pipeline = async function(callback){
   }
   return value;
 };
-
+Object.defineProperty(Array.prototype, 'pipeline', {
+  enumerable: false
+});
 let _pipeline = function(...funcs){
   return funcs.pipeline((a, b) => b.call(this, a));
 }
