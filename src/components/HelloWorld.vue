@@ -474,7 +474,7 @@ export default {
       parseOfdDocument({
         ofd: file,
         success(res) {
-          console.log(res)
+          console.log("返回内容",res)
           let t1 = new Date().getTime();
           console.log('解析ofd',t1 - t);
           that.ofdObj = res[0];

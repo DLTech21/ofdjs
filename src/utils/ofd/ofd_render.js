@@ -79,6 +79,7 @@ export const calPageBox = function (screenWidth, document, page) {
     let array = box.split(' ');
     const scale = ((screenWidth - 10) / parseFloat(array[2])).toFixed(1);
     setMaxPageScal(scale);
+    //设置初始页面展示内容比例大小
     setPageScal(scale);
     box = parseStBox( box);
     box = converterBox(box)
@@ -138,6 +139,7 @@ const renderLayerFromTemplate = function (tpls, template, pageDiv, fontResObj, d
 }
 
 export const renderPage = function (pageDiv, page, tpls, fontResObj, drawParamResObj, multiMediaResObj) {
+    console.log("Render Page", page);
     const pageId = Object.keys(page)[0];
     const template = page[pageId]['json']['ofd:Template'];
     if (Array.isArray(template)) { // 当使用多个模板时
@@ -216,7 +218,7 @@ const renderSealPage = function (pageDiv, pages, tpls, isStampAnnot, stampAnnot,
             const layers = tpls[template['@_TemplateID']]['json']['ofd:Content']['ofd:Layer'];
             let array = [];
             array = array.concat(layers);
-            for (let layer of array) {
+            for (let layer of array) {                
                 if (layer) {
                     renderLayer(div, fontResObj, drawParamResObj, multiMediaResObj, layer,  isStampAnnot);
                 }
@@ -225,6 +227,7 @@ const renderSealPage = function (pageDiv, pages, tpls, isStampAnnot, stampAnnot,
         const contentLayers = page[pageId]['json']['ofd:Content']['ofd:Layer'];
         let array = [];
         array = array.concat(contentLayers);
+        console.log("开始渲染层====================", array);
         for (let contentLayer of array) {
             if (contentLayer) {
                 renderLayer(div, fontResObj, drawParamResObj, multiMediaResObj, contentLayer, isStampAnnot);
@@ -235,6 +238,7 @@ const renderSealPage = function (pageDiv, pages, tpls, isStampAnnot, stampAnnot,
 }
 
 const renderLayer = function (pageDiv, fontResObj, drawParamResObj, multiMediaResObj, layer, isStampAnnot) {
+    console.log("layer=========================", layer);
     let fillColor = null;
     let strokeColor = null;
     let lineWith = converterDpi(0.353);
@@ -283,6 +287,7 @@ const renderLayer = function (pageDiv, fontResObj, drawParamResObj, multiMediaRe
     const textObjects = layer?.['ofd:TextObject'];
     let textObjectArray = [];
     textObjectArray = textObjectArray.concat(textObjects);
+    console.log("textObjectArray", textObjectArray);
     for (const textObject of textObjectArray) {
         if (textObject) {
             let svg = renderTextObject(fontResObj, textObject, fillColor, strokeColor);
@@ -361,6 +366,7 @@ export const renderTextObject = function (fontResObj, textObject, defaultFillCol
     const size = converterDpi(parseFloat(textObject['@_Size']));
     let array = [];
     array = array.concat(textObject['ofd:TextCode']);
+    console.log("开始渲染ofd:TextCode", array);
     const textCodePointList = calTextPoint(array);
     let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttribute('version', '1.1');

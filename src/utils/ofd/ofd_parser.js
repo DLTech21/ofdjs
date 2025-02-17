@@ -130,7 +130,7 @@ const getAnnotations = async function (annoBase, annotations, doc, zip) {
         const pageId = anno['@_PageID'];
         let fileLoc = anno['ofd:FileLoc'];
         fileLoc = replaceFirstSlash(fileLoc);
-        if (annoBase && fileLoc.indexOf(annoBase) === -1) {
+        if (annoBase && fileLoc.indexOf(annoBase + "/") === -1) {
             fileLoc = `${annoBase}/${fileLoc}`;
         }
         if (fileLoc.indexOf(doc) === -1) {

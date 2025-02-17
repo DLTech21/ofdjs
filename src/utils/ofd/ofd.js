@@ -55,7 +55,6 @@ const doParseOFD = function (options) {
             }
         })
         .catch(res => {
-            console.log(res)
             if (options.fail) {
                 options.fail(res);
             }
